@@ -26,11 +26,10 @@ function App() {
 
   async function getNFTsForOwner() {
     setIsLoading(true);
-
     if (ethers.utils.isAddress(userAddress)) {
       try {
         const config = {
-          apiKey: import.meta.env.REACT_APP_API_KEY,
+          apiKey: import.meta.env.VITE_API_KEY,
           network: Network.ETH_MAINNET,
         };
 
@@ -49,6 +48,7 @@ function App() {
         }
 
         setTokenDataObjects(await Promise.all(tokenDataPromises));
+        console.log(tokenDataObjects)
         setHasQueried(true);
       } catch (err) {
         console.log(err);
