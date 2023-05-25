@@ -74,54 +74,31 @@ function App() {
     setIsLoading(false);
   }
   return (
-    <Box w="100vw">
-      <Center>
-        <Flex
-          alignItems={"center"}
-          justifyContent="center"
-          flexDirection={"column"}
-        >
-          <Heading mb={0} fontSize={36}>
-            NFT Indexer 🖼
-          </Heading>
-          <Text>
-            Plug in an address and this website will return all of its NFTs!
-          </Text>
-        </Flex>
-      </Center>
-      <Flex
-        w="100%"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent={"center"}
-      >
-        <Heading mt={42}>Get all the ERC-721 tokens of this address:</Heading>
+    <div className="container p-1">
+      <div className="row text-center d-flex flex-column align-items-center align-self-center">
+        <h1 className="my-4">NFT Indexer</h1>
+        <p className="my-1">Get all ERC-721 tokens of this address:</p>
         <Input
           onChange={(e) => setUserAddress(e.target.value)}
           color="black"
-          w="600px"
           textAlign="center"
           p={4}
           bgColor="white"
           fontSize={24}
+          placeholder={"0x . . ."}
         />
-        <Button fontSize={20} onClick={getNFTsForOwner} mt={36} bgColor="blue">
+        <Button fontSize={20} onClick={getNFTsForOwner} className="mt-2">
           Fetch NFTs
         </Button>
-
-        <Heading my={36}>Here are your NFTs:</Heading>
-
+      </div>
+      <div className="row text-center d-flex flex-column align-items-center mt-5">
+        <h3 className="mb-3">ERC-20 token balances:</h3>
+        {isLoading ? <Spinner w={50} h={50} p={20}></Spinner> : null}
         {hasQueried ? (
-          <SimpleGrid w={"90vw"} columns={4} spacing={24}>
+          <SimpleGrid minChildWidth="120px">
             {results.ownedNfts.map((e, i) => {
               return (
-                <Flex
-                  flexDir={"column"}
-                  color="white"
-                  bg="blue"
-                  w={"20vw"}
-                  key={e.id}
-                >
+                <div key={i} className="container d-flex flex-column max">
                   <Box>
                     <b>Name:</b>{" "}
                     {tokenDataObjects[i].title?.length === 0
@@ -133,17 +110,25 @@ function App() {
                       tokenDataObjects[i]?.rawMetadata?.image ??
                       "https://via.placeholder.com/200"
                     }
-                    alt={"Image"}
+                    height={100}
+                    width={100}
+                    alt={
+                      tokenDataObjects[i].title?.length === 0
+                        ? "No Name"
+                        : tokenDataObjects[i].title
+                    }
+                    className="align-self-center"
                   />
-                </Flex>
+                  <Image />
+                </div>
               );
             })}
           </SimpleGrid>
         ) : (
-          "Please make a query! The query may take a few seconds..."
+          "Please make a query!"
         )}
-      </Flex>
-    </Box>
+      </div>
+    </div>
   );
 }
 
